@@ -12,6 +12,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { format } from "date-fns/format";
+import { Edit2, Trash2 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [orders, setOrders] = useState([]);
@@ -22,6 +24,15 @@ const Home = () => {
       setOrders(JSON.parse(savedOrders));
     }
   }, []);
+
+  const handleDeleteOrder = (id) => {
+    console.log(id);
+    const newOrders = orders.filter((order) => order.orderId !== id);
+    setOrders(newOrders);
+
+    sessionStorage.setItem("orders", JSON.stringify(newOrders));
+  };
+
   return (
     <div className="relative w-full mx-auto min-h-[600px] max-w-4xl bg-white rounded-xl shadow-lg p-6">
       <p className="text-3xl text-center font-bold mb-3">Order List</p>
@@ -33,6 +44,7 @@ const Home = () => {
             <TableHead>Order Date</TableHead>
             <TableHead>List of Items</TableHead>
             <TableHead>Total per Order</TableHead>
+            <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -56,8 +68,26 @@ const Home = () => {
                   ))}
                 </ul>
               </TableCell>
-              <TableCell className="font-medium text-center">
+              <TableCell className="font-medium">
                 {order.items.reduce((sum, item) => sum + item.total, 0)}
+              </TableCell>
+              <TableCell>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => handleDeleteOrder(order.orderId)}
+                    type="button"
+                    className="cursor-pointer"
+                  >
+                    <Trash2 />
+                  </button>
+                  <Link
+                    to={`/edit/${order.orderId}`}
+                    type="button"
+                    className="cursor-pointer"
+                  >
+                    <Edit2 />
+                  </Link>
+                </div>
               </TableCell>
             </TableRow>
           ))}

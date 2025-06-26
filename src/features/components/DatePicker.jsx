@@ -24,7 +24,7 @@ const DatePicker = ({ date, setDate }) => {
             id="date"
             className="w-48 justify-between font-normal"
           >
-            {date ? date.toLocaleDateString() : "Select date"}
+            {date ? new Date(date).toLocaleDateString() : "Select Date"}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>
