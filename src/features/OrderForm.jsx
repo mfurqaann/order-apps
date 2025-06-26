@@ -6,7 +6,8 @@ import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 
 import { CheckCircle2Icon, Plus, SquarePlus, Trash2 } from "lucide-react";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertDescription, AlertTitle } from "@/components/ui/alert";
+import AlertSuccess from "./components/AlertSuccess";
 
 const OrderForm = ({ onAdd }) => {
   const [formData, setFormData] = useState({
@@ -117,16 +118,17 @@ const OrderForm = ({ onAdd }) => {
     <div className="flex justify-center">
       <div className="relative w-full min-h-[600px] max-w-4xl bg-white rounded-xl shadow-lg p-6">
         <h1 className="text-2xl text-center font-bold">Form Order</h1>
+
         <Button
           variant="outline"
           id="date"
-          className="mt-5 justify-between font-normal absolute right-5"
+          className="mt-10 justify-between font-normal"
           onClick={addItem}
         >
           <Plus />
           Add Item
         </Button>
-        <form onSubmit={handleSubmit}>
+        <form className="mt-5" onSubmit={handleSubmit}>
           <div>
             <DatePicker setDate={handleChangeDate} date={formData.date} />
           </div>
@@ -208,16 +210,7 @@ const OrderForm = ({ onAdd }) => {
             Submit Order
           </Button>
         </form>
-        {isSuccessOrder && (
-          <div className="w-[400px] max-auto mt-5">
-            <Alert className="bg-green-500">
-              <CheckCircle2Icon color="green" />
-              <AlertTitle className="text-white">
-                Your order has been created successfuly!
-              </AlertTitle>
-            </Alert>
-          </div>
-        )}
+        {isSuccessOrder && <AlertSuccess />}
       </div>
     </div>
   );
