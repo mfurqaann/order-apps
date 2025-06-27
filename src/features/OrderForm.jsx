@@ -39,8 +39,10 @@ const OrderForm = ({
               return (
                 <div className="flex gap-3 mt-5" key={index}>
                   <div className="w-full">
+                    <label htmlFor="name">Name</label>
                     <Input
                       type="text"
+                      id="name"
                       name="name"
                       value={item.name}
                       className="block"
@@ -50,14 +52,14 @@ const OrderForm = ({
                       }
                     />
                     {item.error?.name && (
-                      <p className="text-red-400 font-medium">
-                        {item.error?.name}
-                      </p>
+                      <p className="text-red-400 text-xs">{item.error?.name}</p>
                     )}
                   </div>
                   <div className="w-full">
+                    <label htmlFor="qty">Quantity</label>
                     <Input
                       type="number"
+                      id="qty"
                       name="qty"
                       value={item.qty}
                       placeholder="qty"
@@ -71,14 +73,14 @@ const OrderForm = ({
                     />
 
                     {item.error?.qty && (
-                      <p className="text-red-400 font-medium">
-                        {item.error?.qty}
-                      </p>
+                      <p className="text-red-400 text-xs">{item.error?.qty}</p>
                     )}
                   </div>
                   <div className="w-full">
+                    <label htmlFor="price">Price</label>
                     <Input
                       type="text"
+                      id="price"
                       name="price"
                       value={item.price}
                       placeholder="price"
@@ -91,10 +93,22 @@ const OrderForm = ({
                       }
                     />
                     {item.error?.price && (
-                      <p className="text-red-400 font-medium">
+                      <p className="text-red-400 text-xs">
                         {item.error?.price}
                       </p>
                     )}
+                  </div>
+
+                  <div className="w-full">
+                    <label htmlFor="price">Sub Total</label>
+                    <Input
+                      type="text"
+                      id="subTotal"
+                      name="subTotal"
+                      disabled
+                      value={item.price * item.qty}
+                      placeholder="subTotal"
+                    />
                   </div>
 
                   <button

@@ -6,6 +6,15 @@ const Create = () => {
   const [orders, setOrders] = useState([]);
   const [isSuccessOrder, setIsSuccessOrder] = useState(false);
 
+  function getNextOrderId(orders, prefix = "TRANS") {
+    const max = orders.reduce((max, order) => {
+      const number = parseInt(order.orderId.match(/\d+$/)?.[0] || "0", 10);
+      return number > max ? number : max;
+    }, 0);
+
+    return `${prefix}-${max + 1}`;
+  }
+
   useEffect(() => {
     const savedOrders = sessionStorage.getItem("orders");
     if (savedOrders) {
@@ -15,13 +24,13 @@ const Create = () => {
 
   const initialFormState = {
     orderId: "",
-    date: undefined,
+    date: new Date(),
     items: [
       {
         name: "",
-        qty: 1,
-        price: 1,
-        total: 1,
+        qty: 0,
+        price: 0,
+        total: 0,
         error: {},
       },
     ],
@@ -102,7 +111,10 @@ const Create = () => {
     e.preventDefault();
     const validated = validation();
     if (validated.isValid) {
-      const newOrders = { ...validated.updatedFormData, orderId: uuidv4() };
+      const newOrders = {
+        ...validated.updatedFormData,
+        orderId: getNextOrderId(orders),
+      };
       addOrder(newOrders);
       setIsSuccessOrder(true);
       setFormData(initialFormState);
