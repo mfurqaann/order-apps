@@ -7,7 +7,6 @@ export const validateForm = (formData) => {
             error.name = "Name must not be empty";
             isValid = false;
         }
-
         if (typeof data.name !== "string" || !/^[A-Za-z\s]+$/.test(data.name.trim())) {
             error.name = "Name should only contain letters and spaces";
             isValid = false;

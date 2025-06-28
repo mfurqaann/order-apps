@@ -7,33 +7,9 @@ import Edit from "./pages/Edit";
 import Navbar from "./features/components/Navbar";
 
 const App = () => {
-  const [orders, setOrders] = useState([]);
-
-  useEffect(() => {
-    const savedOrders = sessionStorage.getItem("orders");
-    if (savedOrders) {
-      setOrders(JSON.parse(savedOrders));
-    }
-  }, []);
-
-  useEffect(() => {
-    const savedOrders = sessionStorage.getItem("orders");
-    sessionStorage.setItem("orders", JSON.stringify(orders));
-  }, [orders]);
-
-  const addOrder = (order) => {
-    setOrders([...orders, order]);
-  };
-
-  const deleteOrder = (index) => {
-    const updated = [...orders];
-    updated.splice(index, 1);
-    setOrders(updated);
-  };
-
   return (
     <BrowserRouter>
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/create" element={<Create />} />

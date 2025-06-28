@@ -1,74 +1,30 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
+import { useParams } from "react-router-dom";
 
 import OrderForm from "../features/OrderForm";
+import {
+  getOrdersFromSessionStorage,
+  updateOrderInSessionStorage,
+} from "../utils/ordersStorage";
+import { validateForm } from "../utils/validation";
 
 const Edit = () => {
   const { id } = useParams();
-  const [orders, setOrders] = useState([]);
-  const navigate = useNavigate();
-  const initialFormState = {
-    orderId: "",
-    date: undefined,
-    items: [
-      {
-        name: "",
-        qty: 1,
-        price: 1,
-        total: 1,
-        error: {},
-      },
-    ],
-  };
 
   const [formData, setFormData] = useState(null);
   const [isSuccessOrder, setIsSuccessOrder] = useState(false);
 
   useEffect(() => {
-    if (!id) return; // atau cek tipe data id\
-    const savedOrders = sessionStorage.getItem("orders");
-    if (savedOrders) {
-      const orders = JSON.parse(savedOrders);
-
-      const selectedOrders = orders.find((order) => order.orderId == id);
+    const savedOrders = getOrdersFromSessionStorage();
+    if (savedOrders.length > 0) {
+      const selectedOrders = savedOrders.find((order) => order.orderId == id);
       if (selectedOrders) {
         setFormData(selectedOrders);
+      } else {
+        return;
       }
     }
   }, [id]);
-
-  const validation = () => {
-    let isValid = true;
-
-    const newItems = formData.items.map((data) => {
-      const error = {};
-      if (!data.name.trim()) {
-        error.name = "Name must not be empty";
-        isValid = false;
-      }
-
-      if (!data.qty || data.qty <= 0) {
-        error.qty = "Quantity must be greater than zero";
-        isValid = false;
-      }
-
-      if (!data.price || data.price <= 0) {
-        error.price = "Price must be greater than zero";
-        isValid = false;
-      }
-
-      return { ...data, error };
-    });
-    const updatedFormData = { ...formData, items: newItems };
-    return { isValid, updatedFormData };
-  };
-
-  const addOrder = (order) => {
-    const updatedOrders = [...orders, order];
-    setOrders(updatedOrders);
-    sessionStorage.setItem("orders", JSON.stringify(updatedOrders));
-  };
 
   const addItem = () => {
     setFormData({
@@ -82,14 +38,16 @@ const Edit = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const validated = validation();
-    if (validated.isValid) {
-      const newOrders = { ...validated.updatedFormData, orderId: uuidv4() };
-      addOrder(newOrders);
+
+    const { isValid, updatedFormData } = validateForm(formData);
+
+    if (isValid) {
+      const updatedOrder = updatedFormData;
+      updateOrderInSessionStorage(updatedOrder);
+      setFormData(updatedOrder);
       setIsSuccessOrder(true);
-      setFormData(initialFormState);
     } else {
-      setFormData(validated.updatedFormData);
+      setFormData(updatedFormData);
       setIsSuccessOrder(false);
     }
   };
@@ -132,6 +90,7 @@ const Edit = () => {
         handleDeleteForm={handleDeleteForm}
         handleChangeDate={handleChangeDate}
         handleItemChange={handleItemChange}
+        isEdit={true}
       />
     </div>
   );

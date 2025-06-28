@@ -1,126 +1,160 @@
-import DatePicker from "./components/DatePicker";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { ArrowLeft, Plus, Trash2 } from "lucide-react";
 
-import { Plus, Trash2 } from "lucide-react";
+import DatePicker from "./components/DatePicker";
 import AlertSuccess from "./components/AlertSuccess";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const OrderForm = ({
   formData,
   addItem,
   handleSubmit,
   isSuccessOrder,
-  setFormData,
   handleItemChange,
   handleChangeDate,
   handleDeleteForm,
+  isEdit,
 }) => {
-  if (!formData) return <p>Loading Data...</p>;
+  const title = isEdit ? "Edit Order" : "Create Order";
+  const navigate = useNavigate();
   return (
-    <div className="flex justify-center">
-      <div className="relative w-full min-h-[600px] max-w-4xl bg-white rounded-xl shadow-lg p-6">
-        <h1 className="text-2xl text-center font-bold">Form Order</h1>
-        <Button
-          variant="outline"
-          id="date"
-          className="justify-between font-normal"
-          onClick={addItem}
-        >
-          <Plus />
-          Add Item
+    <div className="flex justify-center px-4">
+      <div className="w-full max-w-5xl bg-white rounded-2xl shadow-xl p-8 border border-gray-100 space-y-6">
+        <Button variant="ghost" size="sm" onClick={() => navigate(-1)}>
+          <ArrowLeft />
+          Back
         </Button>
-        <form className="mt-5" onSubmit={handleSubmit}>
-          <div>
-            <DatePicker setDate={handleChangeDate} date={formData.date} />
-          </div>
-          <div>
-            {formData?.items.map((item, index) => {
-              return (
-                <div className="md:flex block gap-3 mt-5" key={index}>
-                  <div className="w-full">
-                    <label htmlFor="name">Name</label>
-                    <Input
-                      type="text"
-                      id="name"
-                      name="name"
-                      value={item.name}
-                      className="block"
-                      placeholder="Name"
-                      onChange={(e) =>
-                        handleItemChange(index, "name", e.target.value)
-                      }
-                    />
-                    {item.error?.name && (
-                      <p className="text-red-400 text-xs">{item.error?.name}</p>
-                    )}
-                  </div>
-                  <div className="w-full">
-                    <label htmlFor="qty">Quantity</label>
-                    <Input
-                      type="number"
-                      id="qty"
-                      name="qty"
-                      value={item.qty}
-                      placeholder="qty"
-                      onChange={(e) =>
-                        handleItemChange(
-                          index,
-                          "qty",
-                          parseInt(e.target.value) || 0
-                        )
-                      }
-                    />
+        <h1 className="text-3xl font-bold text-center text-gray-800">
+          {title}
+        </h1>
+        <div className="flex justify-end">
+          <Button variant="default" className="gap-2" onClick={addItem}>
+            <Plus className="w-4 h-4" />
+            Add Item
+          </Button>
+        </div>
 
-                    {item.error?.qty && (
-                      <p className="text-red-400 text-xs">{item.error?.qty}</p>
-                    )}
-                  </div>
-                  <div className="w-full">
-                    <label htmlFor="price">Price</label>
-                    <Input
-                      type="text"
-                      id="price"
-                      name="price"
-                      value={item.price}
-                      placeholder="price"
-                      onChange={(e) =>
-                        handleItemChange(
-                          index,
-                          "price",
-                          parseFloat(e.target.value) || 0
-                        )
-                      }
-                    />
-                    {item.error?.price && (
-                      <p className="text-red-400 text-xs">
-                        {item.error?.price}
-                      </p>
-                    )}
-                  </div>
-                  <div className="w-full">
-                    <label>Sub Total</label>
-                    <Input
-                      name="subTotal"
-                      disabled
-                      value={item.price * item.qty}
-                      placeholder="subTotal"
-                    />
-                  </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block font-medium text-sm text-gray-700 mb-1">
+              Order Date
+            </label>
+            <DatePicker
+              isEdit={isEdit}
+              setDate={handleChangeDate}
+              date={formData?.date}
+            />
+          </div>
+          <div className="space-y-6">
+            {formData?.items.map((item, index) => (
+              <div
+                key={index}
+                className="grid md:grid-cols-5 grid-cols-1 gap-4 items-end border border-gray-200 rounded-md p-4"
+              >
+                <div>
+                  <label
+                    htmlFor="name"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Name
+                  </label>
+                  <Input
+                    id="name"
+                    type="text"
+                    value={item.name}
+                    placeholder="Item name"
+                    onChange={(e) =>
+                      handleItemChange(index, "name", e.target.value)
+                    }
+                  />
+                  {item.error?.name && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {item.error?.name}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label
+                    htmlFor="qty"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Quantity
+                  </label>
+                  <Input
+                    id="qty"
+                    type="number"
+                    value={item.qty}
+                    placeholder="Qty"
+                    onChange={(e) =>
+                      handleItemChange(
+                        index,
+                        "qty",
+                        parseInt(e.target.value) || 0
+                      )
+                    }
+                  />
+                  {item.error?.qty && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {item.error?.qty}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label
+                    htmlFor="price"
+                    className="text-sm font-medium text-gray-700"
+                  >
+                    Price
+                  </label>
+                  <Input
+                    id="price"
+                    type="number"
+                    value={item.price}
+                    placeholder="Price"
+                    onChange={(e) =>
+                      handleItemChange(
+                        index,
+                        "price",
+                        parseFloat(e.target.value) || 0
+                      )
+                    }
+                  />
+                  {item.error?.price && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {item.error?.price}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-gray-700">
+                    Sub Total
+                  </label>
+                  <Input
+                    value={item.price * item.qty}
+                    disabled
+                    placeholder="Subtotal"
+                    className="bg-gray-50"
+                  />
+                </div>
+                <div className="flex justify-end pt-2">
                   <button
                     type="button"
-                    className="cursor-pointer self-center "
                     onClick={() => handleDeleteForm(index)}
+                    className="text-red-500 hover:text-red-600"
+                    title="Delete Item"
                   >
                     <Trash2 />
                   </button>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
-          <Button variant="outline" className="mt-5">
-            Submit Order
-          </Button>
+          <div className="pt-4">
+            <Button type="submit" className="w-full">
+              Submit Order
+            </Button>
+          </div>
         </form>
         {isSuccessOrder && <AlertSuccess />}
       </div>
