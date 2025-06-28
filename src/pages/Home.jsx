@@ -24,6 +24,7 @@ import { Button } from "@/components/ui/button";
 import { format } from "date-fns/format";
 import { Edit2, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { getFormatRupiah } from "../utils/FormatRupiah";
 
 const Home = () => {
   const [orders, setOrders] = useState([]);
@@ -47,7 +48,7 @@ const Home = () => {
     const order = orders.find((o) => o.orderId === orderId);
     const total = order.items.reduce((sum, item) => sum + item.total, 0);
 
-    return total;
+    return getFormatRupiah(total);
   };
 
   return (
@@ -117,22 +118,25 @@ const Home = () => {
                         </TableRow>
                       </TableHeader>
                       <TableBody>
-                        {order.items.map((item, index) => (
-                          <TableRow key={index}>
-                            <TableCell key={index}>
-                              <strong>{item.name}</strong>
-                            </TableCell>
-                            <TableCell className="text-center">
-                              {item.price}
-                            </TableCell>
-                            <TableCell className="text-center">
-                              {item.qty}
-                            </TableCell>
-                            <TableCell className="text-center">
-                              {item.qty * item.price}
-                            </TableCell>
-                          </TableRow>
-                        ))}
+                        {order.items.map((item, index) => {
+                          const subTotal = item.qty * item.price;
+                          return (
+                            <TableRow key={index}>
+                              <TableCell key={index}>
+                                <strong>{item.name}</strong>
+                              </TableCell>
+                              <TableCell className="text-center">
+                                {getFormatRupiah(item.price)}
+                              </TableCell>
+                              <TableCell className="text-center">
+                                {item.qty}
+                              </TableCell>
+                              <TableCell className="text-center">
+                                {getFormatRupiah(subTotal)}
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
                       </TableBody>
                       <TableFooter>
                         <TableRow>
