@@ -24,7 +24,7 @@ const OrderForm = ({
         <Button
           variant="outline"
           id="date"
-          className="mt-10 justify-between font-normal"
+          className="justify-between font-normal"
           onClick={addItem}
         >
           <Plus />
@@ -37,7 +37,7 @@ const OrderForm = ({
           <div>
             {formData?.items.map((item, index) => {
               return (
-                <div className="flex gap-3 mt-5" key={index}>
+                <div className="md:flex block gap-3 mt-5" key={index}>
                   <div className="w-full">
                     <label htmlFor="name">Name</label>
                     <Input
@@ -98,22 +98,18 @@ const OrderForm = ({
                       </p>
                     )}
                   </div>
-
                   <div className="w-full">
-                    <label htmlFor="price">Sub Total</label>
+                    <label>Sub Total</label>
                     <Input
-                      type="text"
-                      id="subTotal"
                       name="subTotal"
                       disabled
                       value={item.price * item.qty}
                       placeholder="subTotal"
                     />
                   </div>
-
                   <button
                     type="button"
-                    className="cursor-pointer"
+                    className="cursor-pointer self-center "
                     onClick={() => handleDeleteForm(index)}
                   >
                     <Trash2 />

@@ -11,8 +11,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+
 import { format } from "date-fns/format";
-import { Edit2, Trash2 } from "lucide-react";
+import { Edit2, Plus, Trash2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
@@ -33,17 +43,35 @@ const Home = () => {
     sessionStorage.setItem("orders", JSON.stringify(newOrders));
   };
 
+  const getTotalOrder = (orderId) => {
+    const order = orders.find((o) => o.orderId === orderId);
+    const total = order.items.reduce((sum, item) => sum + item.total, 0);
+
+    return total;
+  };
+
   return (
     <div className="relative w-full mx-auto min-h-[600px] max-w-4xl bg-white rounded-xl shadow-lg p-6">
       <p className="text-3xl text-center font-bold mb-3">Order List</p>
+
+      <Link to={"/create"}>
+        <Button
+          variant="outline"
+          id="date"
+          className="mb-5 justify-between font-normal"
+        >
+          <Plus />
+          Add Order
+        </Button>
+      </Link>
       <Table>
-        <TableCaption>A list of your recent invoices.</TableCaption>
+        {orders.length === 0 && <TableCaption>No Orders Found</TableCaption>}
+
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Order ID</TableHead>
+            <TableHead>Order ID</TableHead>
             <TableHead>Order Date</TableHead>
-            <TableHead>List of Items</TableHead>
-            <TableHead>Total per Order</TableHead>
+            <TableHead>Detail Order</TableHead>
             <TableHead>Action</TableHead>
           </TableRow>
         </TableHeader>
@@ -55,21 +83,68 @@ const Home = () => {
                 {format(new Date(order.date), "d MMMM yyyy", { locale: id })}
               </TableCell>
               <TableCell>
-                <ul>
-                  {order.items.map((item, index) => (
-                    <li key={index}>
-                      <div>
-                        <strong>{item.name}</strong>
-                      </div>
-                      <div>
-                        {item.qty} pcs x {item.price}
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </TableCell>
-              <TableCell className="font-medium">
-                {order.items.reduce((sum, item) => sum + item.total, 0)}
+                <Dialog>
+                  <DialogTrigger>
+                    <Button
+                      className="cursor-pointer"
+                      variant="outline"
+                      size="sm"
+                    >
+                      Show Detail
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Title</DialogTitle>
+                      <DialogDescription>Description</DialogDescription>
+                    </DialogHeader>
+                    <Table>
+                      <TableCaption>
+                        A list of your recent invoices.
+                      </TableCaption>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Nama Item</TableHead>
+                          <TableHead className="text-center">
+                            Harga Item
+                          </TableHead>
+                          <TableHead className="text-center">
+                            Jumlah Item
+                          </TableHead>
+                          <TableHead className="text-center">
+                            Sub Total
+                          </TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {order.items.map((item, index) => (
+                          <TableRow key={index}>
+                            <TableCell key={index}>
+                              <strong>{item.name}</strong>
+                            </TableCell>
+                            <TableCell className="text-center">
+                              {item.price}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              {item.qty}
+                            </TableCell>
+                            <TableCell className="text-center">
+                              {item.qty * item.price}
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                      <TableFooter>
+                        <TableRow>
+                          <TableCell colSpan={3}>Total</TableCell>
+                          <TableCell className="text-center">
+                            {getTotalOrder(order.orderId)}
+                          </TableCell>
+                        </TableRow>
+                      </TableFooter>
+                    </Table>
+                  </DialogContent>
+                </Dialog>
               </TableCell>
               <TableCell>
                 <div className="flex gap-3">
@@ -92,12 +167,6 @@ const Home = () => {
             </TableRow>
           ))}
         </TableBody>
-        {/* <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
-          </TableRow>
-        </TableFooter> */}
       </Table>
     </div>
   );
