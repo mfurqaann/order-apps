@@ -18,7 +18,6 @@ const Home = () => {
   }, []);
 
   const handleDeleteOrder = (id) => {
-    console.log(id);
     const newOrders = orders.filter((order) => order.orderId !== id);
     setOrders(newOrders);
 

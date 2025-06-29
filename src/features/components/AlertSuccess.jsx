@@ -5,7 +5,7 @@ const AlertSuccess = () => {
   return (
     <div className="w-[400px] max-auto mt-5">
       <Alert className="bg-green-500">
-        <CheckCircle2Icon color="green" />
+        <CheckCircle2Icon color="white" />
         <AlertTitle className="text-white">
           Your order has been created successfuly!
         </AlertTitle>

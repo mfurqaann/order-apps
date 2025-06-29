@@ -29,16 +29,20 @@ const OrderDetailDialog = ({ order, getTotalOrder }) => {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Title</DialogTitle>
-          <DialogDescription>Description</DialogDescription>
+          <DialogTitle className="text-lg font-bold text-gray-800">
+            Order Detail -{" "}
+            <span className="text-blue-600">{order.orderId}</span>
+          </DialogTitle>
+          <DialogDescription className="text-sm text-gray-500">
+            Order item details, including quantity and total price
+          </DialogDescription>
         </DialogHeader>
         <Table>
-          <TableCaption>A list of your recent invoices.</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead>Nama Item</TableHead>
-              <TableHead className="text-center">Harga Item</TableHead>
-              <TableHead className="text-center">Jumlah Item</TableHead>
+              <TableHead>Item Name</TableHead>
+              <TableHead className="text-center">Item Price</TableHead>
+              <TableHead className="text-center">Quantity</TableHead>
               <TableHead className="text-center">Sub Total</TableHead>
             </TableRow>
           </TableHeader>
@@ -63,8 +67,10 @@ const OrderDetailDialog = ({ order, getTotalOrder }) => {
           </TableBody>
           <TableFooter>
             <TableRow>
-              <TableCell colSpan={3}>Total</TableCell>
-              <TableCell className="text-center">
+              <TableCell colSpan={3} className="text-right font-semibold">
+                Total
+              </TableCell>
+              <TableCell className="text-center font-bold text-green-700">
                 {getTotalOrder(order.orderId)}
               </TableCell>
             </TableRow>

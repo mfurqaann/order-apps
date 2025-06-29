@@ -4,6 +4,7 @@ import { ArrowLeft, Plus, Trash2 } from "lucide-react";
 
 import DatePicker from "./components/DatePicker";
 import AlertSuccess from "./components/AlertSuccess";
+import { getFormatRupiah } from "../utils/getFormatRupiah";
 import { useNavigate } from "react-router-dom";
 
 const OrderForm = ({
@@ -35,7 +36,10 @@ const OrderForm = ({
           </Button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6 overflow-y-auto max-h-[70vh]"
+        >
           <div>
             <label className="block font-medium text-sm text-gray-700 mb-1">
               Order Date
@@ -131,7 +135,7 @@ const OrderForm = ({
                     Sub Total
                   </label>
                   <Input
-                    value={item.price * item.qty}
+                    value={getFormatRupiah(item.price * item.qty)}
                     disabled
                     placeholder="Subtotal"
                     className="bg-gray-50"
@@ -141,7 +145,7 @@ const OrderForm = ({
                   <button
                     type="button"
                     onClick={() => handleDeleteForm(index)}
-                    className="text-red-500 hover:text-red-600"
+                    className="text-red-500 hover:text-red-600 cursor-pointer"
                     title="Delete Item"
                   >
                     <Trash2 />
@@ -151,7 +155,7 @@ const OrderForm = ({
             ))}
           </div>
           <div className="pt-4">
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full cursor-pointer">
               Submit Order
             </Button>
           </div>

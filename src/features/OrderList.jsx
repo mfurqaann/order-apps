@@ -18,14 +18,6 @@ import OrderDetailDialog from "./OrderDetailDialog";
 const OrderList = ({ orders, getTotalOrder, handleDeleteOrder }) => {
   return (
     <Table>
-      {orders.length === 0 && (
-        <TableRow>
-          <TableCell colSpan={4} className="text-center py-6 text-gray-500">
-            <span className="italic">No orders found.</span>
-          </TableCell>
-        </TableRow>
-      )}
-
       <TableHeader>
         <TableRow>
           <TableHead>Order ID</TableHead>
@@ -35,6 +27,13 @@ const OrderList = ({ orders, getTotalOrder, handleDeleteOrder }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
+        {orders.length === 0 && (
+          <TableRow>
+            <TableCell colSpan={4} className="text-center py-6 text-gray-500">
+              <span className="italic">No orders found.</span>
+            </TableCell>
+          </TableRow>
+        )}
         {orders.map((order) => (
           <TableRow className="hover:bg-muted transition" key={order.orderId}>
             <TableCell className="font-medium text-sm font-bold">

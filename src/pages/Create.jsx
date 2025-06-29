@@ -64,7 +64,6 @@ const Create = () => {
 
     const updatedItems = [...formData.items];
     updatedItems[index][field] = value;
-
     if (field === "qty" || field === "price") {
       const qty = parseInt(updatedItems[index].qty) || 0;
       const price = parseFloat(updatedItems[index].price) || 0;
