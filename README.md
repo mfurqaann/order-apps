@@ -1,12 +1,42 @@
-# React + Vite
+# Order Management App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simpel order management application built with **React**, **Tailwind CSS**, **Shadcnui**
 
-Currently, two official plugins are available:
+This app allows users to create, edit, and delete orders. All data is stored locally in the browser using `sessionStorage`.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- Add new order with multiple items
+- Edit existing order
+- Delete order
+- Data persistence using `sessionStorage`
+- Responsive and Clean UI using Tailwind CSS and shadcn components
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+
+- React (with Vite) - Fast and modern frontend library for building user interfaces
+- TailwindCSS - Utility-first CSS framework
+- Shadcn/ui - Beautifully design UI components
+
+## How to run the Project
+
+Follow the instructions below to run the application locally.
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/mfurqaann/order-apps.git
+cd order-apps
+
+# 2. Install dependencies
+npm install
+
+# 3. Run the app
+npm run dev
+
+# 4. Open the app in your browser
+http://localhost:5173
+```
+
+## Final Notes
+
+This project is intended to show case my understanding of React fundamentals and my ability to structure, style and manage a small application.
